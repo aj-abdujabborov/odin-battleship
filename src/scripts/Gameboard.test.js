@@ -36,9 +36,8 @@ describe("Gameboard can return its state", () => {
   gameboard.placeShip(0, 1, 3, "up");
   gameboard.receiveAttack(3, 4);
 
-  let temp = gameboard.getState();
-  let boardState = temp.board;
-  const key = temp.key;
+  let boardState = gameboard.getState();
+  const key = Gameboard.getKey();
 
   expect(key).toHaveProperty("sunkShip");
   expect(key).toHaveProperty("hitShip");
@@ -51,10 +50,10 @@ describe("Gameboard can return its state", () => {
 
   expect(boardState[0][1] === key.hitShip).toBe(false);
   gameboard.receiveAttack(0, 1);
-  boardState = gameboard.getState().board;
+  boardState = gameboard.getState();
   expect(boardState[0][1] === key.hitShip).toBe(true);
   gameboard.receiveAttack(0, 2);
   gameboard.receiveAttack(0, 3);
-  boardState = gameboard.getState().board;
+  boardState = gameboard.getState();
   expect(boardState[0][1] === key.sunkShip).toBe(true);
 });

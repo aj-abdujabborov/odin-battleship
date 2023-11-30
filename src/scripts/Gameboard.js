@@ -28,13 +28,17 @@ export default class Gameboard {
     }
   }
 
-  getState() {
-    const key = {
+  static getKey() {
+    return {
       unknown: 1,
       noShip: 2,
       hitShip: 3,
       sunkShip: 4,
     };
+  }
+
+  getState() {
+    const key = Gameboard.getKey();
 
     const stateFunction = (cell) => {
       if (!cell.attacked) return key.unknown;
@@ -43,7 +47,7 @@ export default class Gameboard {
       return key.sunkShip;
     };
 
-    return { board: this.iterator(stateFunction), key };
+    return this.iterator(stateFunction);
   }
 
   placeShip(x, y, length, dir) {
