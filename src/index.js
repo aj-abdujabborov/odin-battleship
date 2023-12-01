@@ -1,3 +1,2 @@
 import "./index.scss";
-
-console.log("hello :)");
+import "./scripts/Controller";

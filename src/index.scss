@@ -1,3 +1,40 @@
 body {
   background: rgb(75, 94, 42);
 }
+
+.container {
+  display: flex;
+  gap: 100px;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(10, auto);
+  grid-template-rows: repeat(10, auto);
+  gap: 1px;
+}
+
+.cell {
+  width: 30px;
+  height: 30px;
+  background: blue;
+  border: 1px solid white;
+}
+
+// Cell states
+.cell.unhit-ship {
+  background: white;
+}
+
+.cell.hit {
+  background: orange;
+}
+
+.cell.hit-ship {
+  background: red;
+}
+
+.cell.sunk-ship {
+  background: red;
+  border-color: red;
+}
