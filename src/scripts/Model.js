@@ -8,13 +8,13 @@ function startGame() {
   const shipLengths = [4, 3, 3, 2, 2, 1, 1];
 
   const boards = {
-    human: new Gameboard(dim),
+    player: new Gameboard(dim),
     opponent: new Gameboard(dim),
   };
 
   Object.keys(boards).forEach((player) => {
     let shipPlacements;
-    if (player === "human") {
+    if (player === "player") {
       shipPlacements = getRandomShipLocations(dim, shipLengths);
     } else {
       shipPlacements = AIPlayer.getShipPlacements(dim, shipLengths);
@@ -31,41 +31,56 @@ export default (function Model() {
   const boards = startGame();
   let playerWon = null;
 
-  function refreshView() {
+  function refreshView(switchTurn) {
     view.refreshView({
-      playerBoard: boards.human.getInsiderKnowledge(),
+      playerBoard: boards.player.getInsiderKnowledge(),
       playerBoardKey: Gameboard.getInsiderKey(),
       opponentBoard: boards.opponent.getOutsiderKnowledge(),
       opponentBoardKey: Gameboard.getOutsiderKey(),
-      switchTurn: true,
+      switchTurn,
     });
   }
 
-  function humanPlayerMove(oppX, oppY) {
-    if (playerWon !== null) return;
-
-    if (boards.opponent.isAttacked(oppX, oppY)) return;
-    boards.opponent.receiveAttack(oppX, oppY);
+  function actuatePlayerMove(x, y) {
+    if (boards.opponent.isAttacked(x, y)) return false;
+    boards.opponent.receiveAttack(x, y);
     if (boards.opponent.areAllShipsDown()) {
       playerWon = true;
     }
-
-    if (playerWon !== null) return;
-    const [humanX, humanY] = AIPlayer.getMove(
-      boards.human.getOutsiderKnowledge(),
-      Gameboard.getOutsiderKey(),
-    );
-    boards.human.receiveAttack(humanX, humanY);
-    if (boards.human.areAllShipsDown()) {
-      playerWon = false;
-    }
-
-    refreshView();
+    return true;
   }
 
-  refreshView();
+  function actuateOpponentMove() {
+    const [x, y] = AIPlayer.getMove(
+      boards.player.getOutsiderKnowledge(),
+      Gameboard.getOutsiderKey(),
+    );
+    boards.player.receiveAttack(x, y);
+    if (boards.player.areAllShipsDown()) {
+      playerWon = false;
+    }
+  }
+
+  let acceptMoves = true;
+  function playerMoves(oppX, oppY) {
+    if (!acceptMoves) return;
+    if (playerWon !== null) return;
+    if (!actuatePlayerMove(oppX, oppY)) return;
+    acceptMoves = false;
+    refreshView(true);
+
+    if (playerWon !== null) return;
+    actuateOpponentMove();
+    setTimeout(() => refreshView(false), 700);
+    setTimeout(() => {
+      refreshView(true);
+      acceptMoves = true;
+    }, 1000);
+  }
+
+  refreshView(false);
 
   return {
-    humanPlayerMove,
+    playerMoves,
   };
 })();

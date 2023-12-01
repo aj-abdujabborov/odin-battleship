@@ -6,6 +6,6 @@ export default (function Controller() {
     if (!e.target.classList.contains("cell")) return;
 
     const { x, y } = e.target.dataset;
-    model.humanPlayerMove(x, y);
+    model.playerMoves(x, y);
   });
 })();
