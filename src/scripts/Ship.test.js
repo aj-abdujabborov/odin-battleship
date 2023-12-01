@@ -17,7 +17,7 @@ describe("Length behaves as expected", () => {
 describe("isSunk() works", () => {
   const ship = new Ship(3);
 
-  test("After doing 3 hits, ship of length 3 is sunk", () => {
+  test("After doing 1 hit, ship of length 3 is not sunk", () => {
     ship.hit();
     expect(ship.isSunk()).toBe(false);
   });
