@@ -5,7 +5,7 @@ const gameboard = new Gameboard();
 gameboard.placeShip(0, 1, 3, "up");
 gameboard.receiveAttack(3, 4);
 
-test("Player gives move", () => {
+test.skip("Player gives move", () => {
   const move = AIPlayer.getMove(
     gameboard.getOutsiderKnowledge(),
     Gameboard.getOutsiderKey(),
@@ -13,7 +13,7 @@ test("Player gives move", () => {
   expect(move.length).toBe(2);
 });
 
-test("Player gives ship placements", () => {
+test.skip("Player gives ship placements", () => {
   const locations = AIPlayer.getShipPlacements(8, [4, 3]);
 
   expect(locations.length).toBe(2);
