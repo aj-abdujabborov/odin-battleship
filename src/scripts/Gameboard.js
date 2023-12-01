@@ -10,7 +10,7 @@ export default class Gameboard {
 
   areAllShipsDown() {
     for (let i = 0; i < this.ships.length; i += 1) {
-      if (!this.ships[i].isSunk()) return false;
+      if (!this.ships[i].ship.isSunk()) return false;
     }
     return true;
   }
@@ -34,6 +34,23 @@ export default class Gameboard {
     this.board[x][y].attacked = true;
     if (this.board[x][y].ship) {
       this.board[x][y].ship.hit();
+    }
+
+    if (this.isShipDown(x, y)) {
+      const deadShip = this.ships.find(
+        (shipObj) => shipObj.ship === this.board[x][y].ship,
+      );
+      const surrValues = coordOps.getSurroundingValues(
+        deadShip.x,
+        deadShip.y,
+        deadShip.length,
+        deadShip.dir,
+        this.dim,
+      );
+      console.log(surrValues);
+      surrValues.forEach((coords) => {
+        this.board[coords[0]][coords[1]].attacked = true;
+      });
     }
   }
 
@@ -93,7 +110,7 @@ export default class Gameboard {
     });
 
     const newShip = new Ship(length);
-    this.ships.push(newShip);
+    this.ships.push({ ship: newShip, x, y, length, dir });
     coordList.forEach((coord) => {
       this.board[coord[0]][coord[1]].ship = newShip;
     });
