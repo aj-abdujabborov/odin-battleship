@@ -1,4 +1,3 @@
-import model from "./Model";
 import dom from "./DOMElems";
 
 export default (function View() {
@@ -26,10 +25,15 @@ export default (function View() {
     }
   }
 
-  function refreshView() {
+  function reflectTurn() {
+    dom.playerTurn.classList.toggle("active");
+    dom.opponentTurn.classList.toggle("active");
+  }
+
+  function refreshView(data) {
     reflectBoard(
-      model.getOpponentBoard(),
-      model.getOpponentBoardKey(),
+      data.opponentBoard,
+      data.opponentBoardKey,
       {
         unknown: "empty",
         noShip: "hit",
@@ -40,8 +44,8 @@ export default (function View() {
     );
 
     reflectBoard(
-      model.getPlayerBoard(),
-      model.getPlayerBoardKey(),
+      data.playerBoard,
+      data.playerBoardKey,
       {
         unhitEmpty: "empty",
         hitEmpty: "hit",
@@ -50,6 +54,8 @@ export default (function View() {
       },
       dom.player,
     );
+
+    if (data.switchTurn) reflectTurn(dom.turn);
   }
 
   return { refreshView };

@@ -1,71 +1,71 @@
 import Gameboard from "./Gameboard";
 import AIPlayer from "./AIPlayer";
 import getRandomShipLocations from "./getRandomShipLocations";
+import view from "./View";
 
-export default (function Model() {
-  const players = {
-    human: 0,
-    opponent: 1,
-  };
+function startGame() {
   const dim = 10;
   const shipLengths = [4, 3, 3, 2, 2, 1, 1];
 
-  let winner = null;
+  const boards = {
+    human: new Gameboard(dim),
+    opponent: new Gameboard(dim),
+  };
 
-  const boards = [new Gameboard(dim), new Gameboard(dim)];
-  boards.forEach((board, ind) => {
+  Object.keys(boards).forEach((player) => {
     let shipPlacements;
-    if (ind === players.human) {
+    if (player === "human") {
       shipPlacements = getRandomShipLocations(dim, shipLengths);
     } else {
       shipPlacements = AIPlayer.getShipPlacements(dim, shipLengths);
     }
     shipPlacements.forEach((ship) => {
-      board.placeShip(ship.x, ship.y, ship.length, ship.dir);
+      boards[player].placeShip(ship.x, ship.y, ship.length, ship.dir);
     });
   });
 
-  function humanPlayerMove(oppX, oppY) {
-    if (winner !== null) return;
-    if (boards[players.opponent].isAttacked(oppX, oppY)) return;
+  return boards;
+}
 
-    boards[players.opponent].receiveAttack(oppX, oppY);
-    if (boards[players.opponent].areAllShipsDown()) {
-      winner = players.human;
-      return;
+export default (function Model() {
+  const boards = startGame();
+  let playerWon = null;
+
+  function refreshView() {
+    view.refreshView({
+      playerBoard: boards.human.getInsiderKnowledge(),
+      playerBoardKey: Gameboard.getInsiderKey(),
+      opponentBoard: boards.opponent.getOutsiderKnowledge(),
+      opponentBoardKey: Gameboard.getOutsiderKey(),
+      switchTurn: true,
+    });
+  }
+
+  function humanPlayerMove(oppX, oppY) {
+    if (playerWon !== null) return;
+
+    if (boards.opponent.isAttacked(oppX, oppY)) return;
+    boards.opponent.receiveAttack(oppX, oppY);
+    if (boards.opponent.areAllShipsDown()) {
+      playerWon = true;
     }
 
+    if (playerWon !== null) return;
     const [humanX, humanY] = AIPlayer.getMove(
-      boards[players.human].getOutsiderKnowledge(),
+      boards.human.getOutsiderKnowledge(),
       Gameboard.getOutsiderKey(),
     );
-    boards[players.human].receiveAttack(humanX, humanY);
-    if (boards[players.human].areAllShipsDown()) {
-      winner = players.opponent;
+    boards.human.receiveAttack(humanX, humanY);
+    if (boards.human.areAllShipsDown()) {
+      playerWon = false;
     }
+
+    refreshView();
   }
 
-  function getPlayerBoard() {
-    return boards[players.human].getInsiderKnowledge();
-  }
-
-  function getOpponentBoard() {
-    return boards[players.opponent].getOutsiderKnowledge();
-  }
-
-  function getPlayerBoardKey() {
-    return Gameboard.getInsiderKey();
-  }
-
-  function getOpponentBoardKey() {
-    return Gameboard.getOutsiderKey();
-  }
+  refreshView();
 
   return {
     humanPlayerMove,
-    getPlayerBoard,
-    getOpponentBoard,
-    getPlayerBoardKey,
-    getOpponentBoardKey,
   };
 })();
