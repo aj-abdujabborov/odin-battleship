@@ -26,13 +26,13 @@ export default function getRandomShipLocations(dim, shipLengths) {
     if (dirStr === "up") startCoord = [orthoAxisCoord, paralAxisStart];
     else startCoord = [paralAxisStart, orthoAxisCoord];
 
-    const cellsToOccupy = [];
+    const coordsShipWouldOccupy = [];
     for (let i = 0; i < shipLength; i += 1) {
       const cell = arrOps.plus(startCoord, arrOps.mult(dirArr, [i, i]));
-      if (!takenCellsBoard[cell[0]][cell[1]]) cellsToOccupy.push(cell);
+      if (!takenCellsBoard[cell[0]][cell[1]]) coordsShipWouldOccupy.push(cell);
     }
 
-    if (cellsToOccupy.length === shipLength) {
+    if (coordsShipWouldOccupy.length === shipLength) {
       shipLocations.push({
         x: startCoord[0],
         y: startCoord[1],
@@ -40,7 +40,18 @@ export default function getRandomShipLocations(dim, shipLengths) {
         length: shipLength,
       });
       shipLengs.pop();
-      cellsToOccupy.forEach((coords) => {
+
+      const coordsToMarkTaken = [
+        ...coordOps.getSurroundingValues(
+          startCoord[0],
+          startCoord[1],
+          shipLength,
+          dirStr,
+          dim,
+        ),
+        ...coordsShipWouldOccupy,
+      ];
+      coordsToMarkTaken.forEach((coords) => {
         takenCellsBoard[coords[0]][coords[1]] = true;
       });
     }
