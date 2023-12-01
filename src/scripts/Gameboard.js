@@ -1,4 +1,5 @@
 import Ship from "./Ship";
+import coordOps from "./CoordinateOperations";
 
 export default class Gameboard {
   constructor(dim = 10) {
@@ -83,31 +84,9 @@ export default class Gameboard {
   }
 
   placeShip(x, y, length, dir) {
-    const dirStringToArray = {
-      left: [-1, 0],
-      right: [1, 0],
-      up: [0, 1],
-      down: [0, -1],
-    };
-
-    function getShipCoordinates() {
-      const coords = [];
-      for (let i = 0; i < length; i += 1) {
-        coords.push(
-          [x, y].map(
-            (coord, index) => coord + dirStringToArray[dir][index] * i,
-          ),
-        );
-      }
-      return coords;
-    }
-
-    const checkPointIsWithinRange = (xCoord, yCoord) =>
-      xCoord >= 0 && xCoord < this.dim && yCoord >= 0 && yCoord < this.dim;
-
-    const coordList = getShipCoordinates();
+    const coordList = coordOps.getBoxCoordinates(x, y, dir, length);
     coordList.forEach((coord) => {
-      if (!checkPointIsWithinRange(coord[0], coord[1]))
+      if (!coordOps.areCoordsWithinRange(coord, 0, this.dim - 1))
         throw Error("Ship is out of board range");
       if (this.board[coord[0]][coord[1]].ship)
         throw Error("Ship overlaps with existing ship");
@@ -125,15 +104,6 @@ export default class Gameboard {
   }
 
   static buildBoard(dim) {
-    const board = [];
-    for (let i = 0; i < dim; i += 1) {
-      board.push([]);
-      for (let j = 0; j < dim; j += 1) {
-        board[i].push({
-          attacked: false,
-        });
-      }
-    }
-    return board;
+    return coordOps.get2DBoard(dim, () => ({ attacked: false }));
   }
 }
