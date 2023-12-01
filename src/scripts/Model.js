@@ -5,7 +5,7 @@ import view from "./View";
 
 function startGame() {
   const dim = 10;
-  const shipLengths = [4, 3, 3, 2, 2, 1, 1];
+  const shipLengths = [5, 4, 4, 3, 3, 2, 2, 1];
 
   const boards = {
     player: new Gameboard(dim),
@@ -71,11 +71,11 @@ export default (function Model() {
 
     if (playerWon !== null) return;
     actuateOpponentMove();
-    setTimeout(() => refreshView(false), 700);
+    setTimeout(() => refreshView(false), 500);
     setTimeout(() => {
       refreshView(true);
       acceptMoves = true;
-    }, 1000);
+    }, 750);
   }
 
   refreshView(false);
