@@ -36,13 +36,8 @@ describe("Gameboard can return its state", () => {
   gameboard.placeShip(0, 1, 3, "up");
   gameboard.receiveAttack(3, 4);
 
-  let boardState = gameboard.getState();
-  const key = Gameboard.getKey();
-
-  expect(key).toHaveProperty("sunkShip");
-  expect(key).toHaveProperty("hitShip");
-  expect(key).toHaveProperty("noShip");
-  expect(key).toHaveProperty("unknown");
+  let boardState = gameboard.getOutsiderKnowledge();
+  const key = Gameboard.getOutsiderKey();
 
   expect(boardState[3][4] === key.noShip).toBe(true);
   expect(boardState[3][5] === key.noShip).toBe(false);
@@ -50,10 +45,20 @@ describe("Gameboard can return its state", () => {
 
   expect(boardState[0][1] === key.hitShip).toBe(false);
   gameboard.receiveAttack(0, 1);
-  boardState = gameboard.getState();
+  boardState = gameboard.getOutsiderKnowledge();
   expect(boardState[0][1] === key.hitShip).toBe(true);
   gameboard.receiveAttack(0, 2);
   gameboard.receiveAttack(0, 3);
-  boardState = gameboard.getState();
+  boardState = gameboard.getOutsiderKnowledge();
   expect(boardState[0][1] === key.sunkShip).toBe(true);
+});
+
+test("Gameboard knows when all ships are down", () => {
+  const gameboard = new Gameboard();
+  gameboard.placeShip(0, 0, 2, "up");
+  gameboard.placeShip(2, 0, 1, "right");
+  gameboard.receiveAttack(0, 0);
+  gameboard.receiveAttack(0, 1);
+  gameboard.receiveAttack(2, 0);
+  expect(gameboard.areAllShipsDown()).toBe(true);
 });

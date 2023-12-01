@@ -1,9 +1,17 @@
 import Ship from "./Ship";
 
 export default class Gameboard {
-  constructor() {
-    this.dim = 8;
+  constructor(dim = 10) {
+    this.dim = dim;
     this.board = Gameboard.buildBoard(this.dim);
+    this.ships = [];
+  }
+
+  areAllShipsDown() {
+    for (let i = 0; i < this.ships.length; i += 1) {
+      if (!this.ships[i].isSunk()) return false;
+    }
+    return true;
   }
 
   isShipDown(x, y) {
@@ -28,7 +36,31 @@ export default class Gameboard {
     }
   }
 
-  static getKey() {
+  static getInsiderKey() {
+    return {
+      unhitEmpty: 1,
+      hitEmpty: 2,
+      unhitShip: 3,
+      hitShip: 4,
+    };
+  }
+
+  getInsiderKnowledge() {
+    const key = Gameboard.getInsiderKey();
+
+    const func = (cell) => {
+      if (!cell.ship) {
+        if (!cell.attacked) return key.unhitEmpty;
+        return key.hitEmpty;
+      }
+      if (!cell.attacked) return key.unhitShip;
+      return key.hitShip;
+    };
+
+    return this.iterator(func);
+  }
+
+  static getOutsiderKey() {
     return {
       unknown: 1,
       noShip: 2,
@@ -37,17 +69,17 @@ export default class Gameboard {
     };
   }
 
-  getState() {
-    const key = Gameboard.getKey();
+  getOutsiderKnowledge() {
+    const key = Gameboard.getOutsiderKey();
 
-    const stateFunction = (cell) => {
+    const func = (cell) => {
       if (!cell.attacked) return key.unknown;
       if (!cell.ship) return key.noShip;
       if (!cell.ship.isSunk()) return key.hitShip;
       return key.sunkShip;
     };
 
-    return this.iterator(stateFunction);
+    return this.iterator(func);
   }
 
   placeShip(x, y, length, dir) {
@@ -82,6 +114,7 @@ export default class Gameboard {
     });
 
     const newShip = new Ship(length);
+    this.ships.push(newShip);
     coordList.forEach((coord) => {
       this.board[coord[0]][coord[1]].ship = newShip;
     });
