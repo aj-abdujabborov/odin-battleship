@@ -2,15 +2,16 @@ import arrOps from "./ArrayOperations";
 import coordOps from "./CoordinateOperations";
 
 export default function getRandomShipLocations(dim, shipLengths) {
-  shipLengths = shipLengths.sort();
+  const shipLengs = [...shipLengths].sort();
+
   const takenCellsBoard = coordOps.get2DBoard(dim, () => false);
   const shipLocations = [];
 
-  while (shipLengths.length) {
+  while (shipLengs.length) {
     const directions = ["up", "right"];
     const dirStr = directions[Math.floor(Math.random() * directions.length)];
     const dirArr = coordOps.directionToArray[dirStr];
-    const shipLength = shipLengths[shipLengths.length - 1];
+    const shipLength = shipLengs[shipLengs.length - 1];
 
     const maxStartPos = dim - shipLength;
     if (maxStartPos < 0)
@@ -38,7 +39,7 @@ export default function getRandomShipLocations(dim, shipLengths) {
         dir: dirStr,
         length: shipLength,
       });
-      shipLengths.pop();
+      shipLengs.pop();
       cellsToOccupy.forEach((coords) => {
         takenCellsBoard[coords[0]][coords[1]] = true;
       });
