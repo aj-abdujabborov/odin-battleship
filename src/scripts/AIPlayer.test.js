@@ -1,4 +1,4 @@
-import { HumanPlayer, AIPlayer } from "./Player";
+import AIPlayer from "./AIPlayer";
 import Gameboard from "./Gameboard";
 
 const gameboard = new Gameboard();
@@ -6,7 +6,10 @@ gameboard.placeShip(0, 1, 3, "up");
 gameboard.receiveAttack(3, 4);
 
 test("Player gives move", () => {
-  const move = AIPlayer.getMove(gameboard.getState(), Gameboard.getKey());
+  const move = AIPlayer.getMove(
+    gameboard.getOutsiderKnowledge(),
+    Gameboard.getOutsiderKey(),
+  );
   expect(move.length).toBe(2);
 });
 
