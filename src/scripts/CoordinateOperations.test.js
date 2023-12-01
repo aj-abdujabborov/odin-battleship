@@ -16,3 +16,13 @@ describe("Check getSurroundingValues()", () => {
     expect(surrVals.length).toBe(5);
   });
 });
+
+describe("Check get4Neighbors()", () => {
+  test("A location in center will give 4 neighbors", () => {
+    expect(coordOps.get4Neighbors(3, 3, 8).length).toBe(4);
+  });
+
+  test("A location in corner will give 2 neighbors", () => {
+    expect(coordOps.get4Neighbors(0, 0, 8).length).toBe(2);
+  });
+});

@@ -38,6 +38,19 @@ export default {
     }
     return coordsList;
   },
+  get4Neighbors(x, y, dim) {
+    const dirsShuffled = Object.keys(this.directionToArray).sort(
+      () => Math.random() - 0.5,
+    );
+    const neighbors = [];
+    dirsShuffled.forEach((dir) => {
+      const neighbor = arrOps.plus([x, y], this.directionToArray[dir]);
+      if (this.areCoordsWithinRange(neighbor, 0, dim - 1)) {
+        neighbors.push(neighbor);
+      }
+    });
+    return neighbors;
+  },
   getOrthogonalNeighbors(coords, dir) {
     const dirArrAbsInv = this.directionToArray[dir]
       .map((scalar) => Math.abs(scalar))
