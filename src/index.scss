@@ -25,6 +25,17 @@ body {
   box-sizing: border-box;
 }
 
+// Buttons
+.button {
+  cursor: pointer;
+  color: var(--text-color);
+  transition: transform 100ms ease-in 50ms;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
 // Header
 .header {
   font-family: "Black Ops One";
@@ -61,12 +72,93 @@ body {
 
 span.reset-button {
   margin-left: auto;
-  cursor: pointer;
-  color: var(--text-color);
-  transition: transform 100ms ease-in 50ms;
+}
 
-  &:hover {
-    transform: scale(1.1);
+// Winner announcement
+dialog.winner-announcement {
+  border: none;
+  outline: none;
+  padding: 0;
+
+  background: var(--text-color);
+  border-radius: 10px;
+
+  &::backdrop {
+    background-color: #14310944;
+  }
+}
+
+.dialog-container {
+  position: relative;
+  margin: 0;
+  height: 200px;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  overflow: hidden;
+
+  color: white;
+
+  .emoji-container {
+    position: relative;
+    width: 100px;
+    height: 100%;
+  }
+
+  .emoji,
+  .emoji2 {
+    font-size: 80px;
+
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -40px;
+    margin-top: -52.5px;
+  }
+
+  .emoji.loser {
+    transition: transform cubic-bezier(0.44, 0.71, 0.45, 0.09) 2s 150ms;
+  }
+
+  &:hover .emoji.loser {
+    transform: translateX(300px) rotateZ(0.6turn);
+  }
+
+  .emoji.winner {
+    transform: translateY(140%) rotateZ(-0.1turn);
+    transition: transform 1s ease;
+
+    &::before {
+      content: "Yay";
+    }
+  }
+
+  &:hover .emoji.winner {
+    transform: translateY(-40%) translateX(20px) rotateZ(0.1turn);
+  }
+
+  .emoji2.winner {
+    transform: rotateZ(7deg);
+    transition: transform 800ms ease;
+  }
+
+  &:hover .emoji2.winner {
+    transform: scale(1.5) translateX(-100px) rotateZ(-0.1turn);
+  }
+
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: inherit;
+  }
+
+  .announcement {
+    width: 200px;
+    text-wrap: wrap;
   }
 }
 
@@ -80,8 +172,9 @@ span.reset-button {
 
 .player-container,
 .opponent-container {
-  padding: 20px;
-  border: 10px solid var(--text-color);
+  padding: 15px;
+  border: 6px solid var(--text-color);
+  border-radius: 10px;
 }
 
 .board {
@@ -96,6 +189,7 @@ span.reset-button {
   width: 35px;
   height: 35px;
   background: var(--color-water);
+  border-radius: 2px;
 
   display: flex;
   justify-content: center;

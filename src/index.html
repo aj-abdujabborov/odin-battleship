@@ -9,13 +9,25 @@
     <div class="header">
       <h1>Battleship</h1>
     </div>
+    <dialog class="winner-announcement">
+      <div class="dialog-container">
+        <div class="emoji-container">
+          <span class="emoji"></span>
+          <span class="emoji2"></span>
+        </div>
+        <span class="announcement"></span>
+        <span class="material-symbols-rounded close-button button">close</span>
+      </div>
+    </dialog>
     <div class="game-container">
       <div class="player-container">
         <div class="box">
           <div class="info-row">
             <span class="turn"></span>
             <span class="name">Home Territory</span>
-            <span class="reset-button material-symbols-rounded">refresh</span>
+            <span class="reset-button button material-symbols-rounded"
+              >refresh</span
+            >
           </div>
           <div class="player-board board"></div>
         </div>
