@@ -7,21 +7,29 @@ export default (function Model() {
       ...game.getGameFromPlayerPOV(),
       turn: turn || game.whoseTurn(),
     });
+
+    if (game.isGameOver()) {
+      view.announceWinner(game.didPlayerWin() ? "player" : "opponent");
+    }
   }
 
-  let acceptMoves = true;
+  let acceptInputs = true;
   function playerMoves(oppX, oppY) {
-    if (!acceptMoves) return;
+    if (!acceptInputs) return;
     if (!game.applyPlayerMove(oppX, oppY)) return;
-    acceptMoves = false;
+    acceptInputs = false;
     refreshView();
 
-    if (game.isGameOver()) return;
+    if (game.isGameOver()) {
+      acceptInputs = true;
+      return;
+    }
+
     game.requestAIMove();
     setTimeout(() => refreshView("opponent"), 500);
     setTimeout(() => {
       refreshView();
-      acceptMoves = true;
+      acceptInputs = true;
     }, 750);
   }
 

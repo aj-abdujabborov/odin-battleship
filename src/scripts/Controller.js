@@ -12,4 +12,8 @@ export default (function Controller() {
   dom.resetButton.addEventListener("click", () => {
     model.resetGame();
   });
+
+  dom.winnerDialog.close.addEventListener("click", () => {
+    dom.winnerDialog.dialog.close();
+  });
 })();

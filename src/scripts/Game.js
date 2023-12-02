@@ -84,6 +84,11 @@ export default (function Game() {
     return playerWon !== null;
   }
 
+  function didPlayerWin() {
+    if (!isGameOver()) return null;
+    return playerWon;
+  }
+
   restart();
 
   return {
@@ -93,5 +98,6 @@ export default (function Game() {
     whoseTurn,
     getGameFromPlayerPOV,
     isGameOver,
+    didPlayerWin,
   };
 })();

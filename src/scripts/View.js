@@ -61,6 +61,44 @@ export default (function View() {
     if (data.turn) reflectTurn(data.turn);
   }
 
-  return { refreshView };
+  function getRandomElement(array) {
+    return array[Math.floor(Math.random() * array.length)];
+  }
+
+  function announceWinner(winner) {
+    const loseMessages = [
+      "Wouldn't be fun if you never lost :)",
+      "You lost... but it's ok",
+      "You lost the game, but you can win at life",
+      "You lost. That doesn't mean you didn't have fun!",
+    ];
+    const winMessages = [
+      "Ummm, should you... be a general? You won!",
+      "Winner winner, blueberry pie dinner",
+      "How to account for you defeating the bot? Man you are nooooon-stop!",
+      "You won! ...Oh don't worry about the AI. It probably can't feel anything...",
+    ];
+
+    dom.winnerDialog.emoji.classList.remove("winner", "loser");
+    dom.winnerDialog.emoji2.classList.remove("winner", "loser");
+    dom.winnerDialog.emoji2.textContent = "";
+
+    if (winner === "player") {
+      dom.winnerDialog.emoji.textContent = "🥳";
+      dom.winnerDialog.emoji.classList.add("winner");
+      dom.winnerDialog.emoji2.textContent = "🌈";
+      dom.winnerDialog.emoji2.classList.add("winner");
+      dom.winnerDialog.text.textContent = getRandomElement(winMessages);
+    } else {
+      dom.winnerDialog.emoji.textContent = "😕";
+      dom.winnerDialog.emoji.classList.add("loser");
+      dom.winnerDialog.emoji2.classList.add("loser");
+      dom.winnerDialog.text.textContent = getRandomElement(loseMessages);
+    }
+
+    dom.winnerDialog.dialog.showModal();
+  }
+
+  return { refreshView, announceWinner };
   // can rename to "home" and "away" instead of "player" and "opponent"
 })();
