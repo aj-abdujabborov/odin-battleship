@@ -9,7 +9,6 @@
 
   --color-air: #f9f9f9;
   --color-water: #5aa9e6;
-  --color-water-hover: #a3d0f3;
   --color-ouch: #ff6392;
   --color-dead: #a52422;
   --text-color: #143109;
@@ -45,10 +44,6 @@ body {
   align-items: center;
   gap: 5px;
   margin-bottom: 5px;
-
-  span.reset-button {
-    margin-left: auto;
-  }
 }
 
 .turn.active {
@@ -62,6 +57,17 @@ body {
 .name {
   color: var(--text-color);
   display: inline-block;
+}
+
+span.reset-button {
+  margin-left: auto;
+  cursor: pointer;
+  color: var(--text-color);
+  transition: transform 100ms ease-in 50ms;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 // Game
@@ -99,7 +105,7 @@ body {
 .opponent-container .cell.empty {
   cursor: pointer;
   &:hover {
-    background: var(--color-water-hover);
+    opacity: 0.8;
   }
 }
 
