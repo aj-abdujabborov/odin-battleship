@@ -1,5 +1,6 @@
 // Fonts
 @import url("https://fonts.googleapis.com/css2?family=Black+Ops+One&family=Raleway:ital,wght@0,200;0,500;0,900;1,700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,500,0,0");
 
 // Root
 :root {
@@ -36,6 +37,31 @@ body {
     margin: 30px 0;
   }
   border-bottom: 2px var(--text-color) solid;
+}
+
+// Info-row
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px;
+
+  span.reset-button {
+    margin-left: auto;
+  }
+}
+
+.turn.active {
+  border-radius: 50%;
+  width: 15px;
+  height: 15px;
+  background: var(--text-color);
+  display: inline-block;
+}
+
+.name {
+  color: var(--text-color);
+  display: inline-block;
 }
 
 // Game
@@ -96,19 +122,4 @@ body {
 
 .cell.sunk-ship {
   background: var(--color-dead);
-}
-
-// Turn indicator
-.turn.active {
-  border-radius: 50%;
-  width: 15px;
-  height: 15px;
-  background: var(--text-color);
-  display: inline-block;
-}
-
-.name {
-  color: var(--text-color);
-  margin-bottom: 5px;
-  display: inline-block;
 }
