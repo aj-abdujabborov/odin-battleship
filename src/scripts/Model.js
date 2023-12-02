@@ -26,11 +26,11 @@ export default (function Model() {
     }
 
     game.requestAIMove();
-    setTimeout(() => refreshView("opponent"), 500);
+    setTimeout(() => refreshView("opponent"), 300); // time until opponent's move is shown
     setTimeout(() => {
       refreshView();
       acceptInputs = true;
-    }, 750);
+    }, 500); // time until it's player's turn again
   }
 
   function resetGame() {

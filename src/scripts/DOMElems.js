@@ -3,8 +3,12 @@ const dialog = document.querySelector("dialog.winner-announcement");
 export default {
   player: document.querySelector("div.player-board"),
   opponent: document.querySelector("div.opponent-board"),
-  playerTurn: document.querySelector(".player-container .turn"),
-  opponentTurn: document.querySelector(".opponent-container .turn"),
+  playerBeingAttacked: document.querySelector(
+    ".player-container .receiving-attack",
+  ),
+  opponentBeingAttacked: document.querySelector(
+    ".opponent-container .receiving-attack",
+  ),
   resetButton: document.querySelector(".reset-button"),
   winnerDialog: {
     dialog,

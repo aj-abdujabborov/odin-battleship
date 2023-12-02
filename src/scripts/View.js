@@ -26,11 +26,11 @@ export default (function View() {
   }
 
   function reflectTurn(turn) {
-    dom.playerTurn.classList.remove("active");
-    dom.opponentTurn.classList.remove("active");
+    dom.playerBeingAttacked.classList.remove("active");
+    dom.opponentBeingAttacked.classList.remove("active");
 
-    if (turn === "player") dom.playerTurn.classList.add("active");
-    else dom.opponentTurn.classList.add("active");
+    if (turn === "player") dom.opponentBeingAttacked.classList.add("active");
+    else dom.playerBeingAttacked.classList.add("active");
   }
 
   function refreshView(data) {
