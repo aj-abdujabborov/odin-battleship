@@ -25,9 +25,12 @@ export default (function View() {
     }
   }
 
-  function reflectTurn() {
-    dom.playerTurn.classList.toggle("active");
-    dom.opponentTurn.classList.toggle("active");
+  function reflectTurn(turn) {
+    dom.playerTurn.classList.remove("active");
+    dom.opponentTurn.classList.remove("active");
+
+    if (turn === "player") dom.playerTurn.classList.add("active");
+    else dom.opponentTurn.classList.add("active");
   }
 
   function refreshView(data) {
@@ -55,7 +58,7 @@ export default (function View() {
       dom.player,
     );
 
-    if (data.switchTurn) reflectTurn(dom.turn);
+    if (data.turn) reflectTurn(data.turn);
   }
 
   return { refreshView };

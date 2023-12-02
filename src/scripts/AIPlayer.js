@@ -4,7 +4,7 @@ import getRandomShipLocations from "./getRandomShipLocations";
 import coordOps from "./CoordinateOperations";
 import arrOps from "./ArrayOperations";
 
-export default (function AIPlayer() {
+export default function AIPlayer() {
   let hitShipStart = null;
   let hitShipEnd = null;
   let prevTarget = null;
@@ -104,4 +104,4 @@ export default (function AIPlayer() {
   }
 
   return { getMove, getShipPlacements };
-})();
+}
