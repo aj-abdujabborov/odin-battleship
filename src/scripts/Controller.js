@@ -8,4 +8,8 @@ export default (function Controller() {
     const { x, y } = e.target.dataset;
     model.playerMoves(x, y);
   });
+
+  dom.resetButton.addEventListener("click", () => {
+    model.resetGame();
+  });
 })();
